@@ -18,4 +18,4 @@ export async function getPokemonDataByName(pokemonNameOrId) {
   }
 }
 
-getPokemonDataByName("charmeleon").then((data) => console.log(data));
+getPokemonDataByName("bulbasaur").then((data) => console.log(data));

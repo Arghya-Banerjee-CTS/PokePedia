@@ -1,6 +1,7 @@
 export function formatPokemonData(data) {
   return {
     name: data.name,
+    id: data.id,
     default_image: data.sprites.other["dream_world"].front_default,
     types: data.types.map((t) => t.type.name),
     height: data.height,
