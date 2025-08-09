@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PokePedia Dashboard</title>
+    <link rel="stylesheet" href="./css/dashboard.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="brand">
+            <div class="brand-mark" aria-hidden="true"></div>
+            <h1>PokePedia</h1>
+        </div>
+
+        <div class="search">
+            <input id="searchInput" type="search" placeholder="Search Pokemon, types, #..">
+            <button id="searchClear" type="button" title="Clear">x</button>
+        </div>
+    </header>
+
+    <main class="layout">
+        <aside class="filters" aria-label="Filters">
+            <div class="filter-section">
+                <h3>Type</h3>
+                <div class="chips" id="typeChips">
+                    <button type="button" class="chip">Fire</button>
+                    <button type="button" class="chip">Water</button>
+                    <button type="button" class="chip">Grass</button>
+                    <button type="button" class="chip">Electric</button>
+                    <button type="button" class="chip">Dragon</button>
+                    <button type="button" class="chip">Fairy</button>
+                    <button type="button" class="chip">Ghost</button>
+                    <button type="button" class="chip">Poison</button>
+                    <button type="button" class="chip">Flying</button>
+                    <button type="button" class="chip">Ground</button>
+                    <button type="button" class="chip">Rock</button>
+                    <button type="button" class="chip">Psychic</button>
+                    <button type="button" class="chip">Ice</button>
+                    <button type="button" class="chip">Fighting</button>
+                    <button type="button" class="chip">Steel</button>
+                    <button type="button" class="chip">Dark</button>
+                    <button type="button" class="chip">Normal</button>
+                    <button type="button" class="chip">Bug</button>
+                </div>
+            </div>
+            <div class="filter-search">
+                <h3>Generation
+                    <select id="genSelect">
+                        <option value="">All</option>
+                        <option value="1">Gen I</option>
+                        <option value="2">Gen II</option>
+                        <option value="3">Gen III</option>
+                        <option value="4">Gen IV</option>
+                        <option value="5">Gen V</option>
+                        <option value="6">Gen VI</option>
+                        <option value="7">Gen VII</option>
+                        <option value="8">Gen VIII</option>
+                        <option value="9">Gen IX</option>
+                    </select>
+                </h3>
+            </div>
+            <div class="filter-section">
+                <h3>Sort</h3>
+                <select id="sortSelect">
+                    <option value="name_asc">Name A-Z</option>
+                    <option value="name_desc">Name Z-A</option>
+                    <option value="id_asc"># ASC</option>
+                    <option value="id_desc"># DESC</option>
+                </select>
+            </div>
+            <div class="filter-section">
+                <h3>Flags</h3>
+                <label><input type="checkbox" id="flagLegendary">Legendary</label>
+                <label><input type="checkbox" id="flagHasMega">Has Mega</label>
+                <label><input type="checkbox" id="flagFullyEvolved">Fully Evolved</label>
+            </div>
+        </aside>
+
+        <!-- Asli maza -->
+        <section class="content">
+            <div class="results-bar">
+                <div id="resultsCount">Showing 0-0 of 0</div>
+                <div class="page-size">
+                    Per Page:
+                    <select id="pageSizeSelect">
+                        <option value="24">24</option>
+                        <option value="48">48</option>
+                        <option value="96">96</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="grid" class="grid" role="list" aria-label="PokePedia results">
+                <!-- To be rendered by JS -->
+            </div>
+
+            <nav id="pagination" class="pagination" aria-label="Pagination">
+                <!-- To be rendered by JS -->
+            </nav>
+        </section>
+    </main>
+    <script src="./js/app.js"></script>
+</body>
+
+</html>
