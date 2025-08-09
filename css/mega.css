@@ -1,6 +1,7 @@
 body { 
     font-family: Arial, sans-serif; 
-    background: #f8f8f8; 
+    background: #f5f7fb; 
+    font: 500 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     margin: 0; 
     padding: 20px; 
 }
@@ -42,8 +43,47 @@ h1 {
     font-size: 0.9em;
 }
 
+.header {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    align-items: center;
+    gap: 16px;
+    pad: 16px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid #e6e9f2;
+}
+
 .brand {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.brand h1 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.brand-mark {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+}
+
+.search {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #e6e9f2;
+    /* border-radius: 999px; */
+    padding: 8px 10px 8px 14px;
+}
+
+.search input {
+    border: 0;
+    outline: 0;
+    width: 360px;
+    font: inherit;
 }

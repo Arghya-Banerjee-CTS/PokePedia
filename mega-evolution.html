@@ -6,6 +6,182 @@
     <title>Mega Evolutions - PokePedia</title>
     <link rel="stylesheet" href="./css/mega.css">
 </head>
+ <body>
+    <!-- <header style="background:#ffffff;color:rgb(0, 0, 0);padding:20px 0;text-align:center;font-size:34px;letter-spacing:2px;">
+        PokePedia
+    </header> -->
+    <header class="header">
+        <div class="brand">
+            <div class="brand-mark" aria-hidden="true"></div>
+            <h1>PokePedia</h1>
+        </div>
+
+        <div class="search">
+            <input id="searchInput" type="search" placeholder="Search Pokemon, types, #..">
+            <button id="searchClear" type="button" title="Clear">x</button>
+        </div>
+    </header>
+    <div style="text-align:center; margin: 20px 0;">
+        <button class="form-btn" data-form="mega">Mega</button>
+        <button class="form-btn" data-form="alola">Alolan</button>
+        <button class="form-btn" data-form="galar">Galarian</button>
+        <button class="form-btn" data-form="hisui">Hisuian</button>
+        <button class="form-btn" data-form="paldea">Paldean</button>
+        <button class="form-btn" data-form="gmax">Gigantamax</button>
+        <button class="form-btn" data-form="all">All Special Forms</button>
+    </div>
+    <h1 id="form-title">Mega Evolutions</h1>
+    <div class="container" id="mega-container"></div>
+
+    <script>
+        const container = document.getElementById('mega-container');
+        const formTitle = document.getElementById('form-title');
+
+        // Keywords for special forms
+        const formKeywords = {
+            mega: ['-mega'],
+            alola: ['-alola'],
+            galar: ['-galar'],
+            hisui: ['-hisui'],
+            paldea: ['-paldea'],
+            gmax: ['-gmax'],
+            all: [
+                '-primal','-totem', '-therian', '-origin', '-busted', '-school', '-ash', '-starter',
+                '-battle-bond', '-eternamax', '-dusk', '-dawn', '-midnight', '-sky', '-zen',
+                '-resolute', '-blade', '-shield', '-pirouette', '-black', '-white', '-complete', '-ultra',
+                '-crowned', '-rainy', '-snowy', '-sunny', '-fan',
+                '-frost', '-heat', '-mow', '-wash'
+            ]
+        };
+
+        // Beautify name for display
+        function beautifyName(name) {
+            return name
+                .replace('-mega', ' (Mega)')
+                .replace('-alola', ' (Alolan)')
+                .replace('-galar', ' (Galarian)')
+                .replace('-hisui', ' (Hisuian)')
+                .replace('-paldea', ' (Paldean)')
+                .replace('-gmax', ' (Gigantamax)')
+                .replace('-primal', ' (Primal)')
+                .replace('-totem', ' (Totem)')
+                .replace('-therian', ' (Therian)')
+                .replace('-origin', ' (Origin)')
+                .replace('-busted', ' (Busted)')
+                .replace('-school', ' (School)')
+                .replace('-ash', ' (Ash)')
+                .replace('-starter', ' (Starter)')
+                .replace('-battle-bond', ' (Battle Bond)')
+                .replace('-eternamax', ' (Eternamax)')
+                .replace('-dusk', ' (Dusk)')
+                .replace('-dawn', ' (Dawn)')
+                .replace('-midnight', ' (Midnight)')
+                .replace('-sky', ' (Sky)')
+                .replace('-zen', ' (Zen)')
+                .replace('-resolute', ' (Resolute)')
+                .replace('-pirouette', ' (Pirouette)')
+                .replace('-black', ' (Black)')
+                .replace('-white', ' (White)')
+                .replace('-complete', ' (Complete)')
+                .replace('-ultra', ' (Ultra)')
+                .replace('-crowned', ' (Crowned)')
+                .replace('-blade', ' (Blade)')
+                .replace('-shield', ' (Shield)')
+                .replace('-rainy', ' (Rainy)')
+                .replace('-snowy', ' (Snowy)')
+                .replace('-sunny', ' (Sunny)')
+                .replace('-fan', ' (Fan)')
+                .replace('-frost', ' (Frost)')
+                .replace('-heat', ' (Heat)')
+                .replace('-mow', ' (Mow)')
+                .replace('-wash', ' (Wash)')
+                .replace(/-mega-[xy]/, (m) => m === '-mega-x' ? ' (Mega X)' : ' (Mega Y)');
+        }
+
+        let allPokemon = [];
+
+        async function fetchAllPokemon() {
+            const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
+            const data = await res.json();
+            allPokemon = data.results;
+        }
+
+        
+        let displayVersion = 0;
+
+    async function displayForms(formType) {
+        const myVersion = ++displayVersion; // Increment global version and capture for this call
+        container.innerHTML = '';
+        let keywords = formKeywords[formType];
+        let filtered = allPokemon.filter(p =>
+            keywords.some(keyword => p.name.includes(keyword))
+        );
+        filtered.sort((a, b) => a.name.localeCompare(b.name));
+
+        formTitle.textContent =
+            formType === 'all'
+                ? 'All Special Forms'
+                : (formType.charAt(0).toUpperCase() + formType.slice(1)) + ' Forms';
+
+        for (const poke of filtered) {
+            // If a new displayForms call has started, stop this one
+            if (myVersion !== displayVersion) return;
+            try {
+                const res = await fetch(poke.url);
+                const data = await res.json();
+
+                // If a new displayForms call has started, stop this one
+                if (myVersion !== displayVersion) return;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                const img = document.createElement('img');
+                img.src = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
+                img.alt = data.name;
+                card.appendChild(img);
+
+                const title = document.createElement('h2');
+                title.textContent = beautifyName(data.name);
+                card.appendChild(title);
+
+                const typesDiv = document.createElement('div');
+                typesDiv.className = 'types';
+                data.types.forEach(t => {
+                    const typeSpan = document.createElement('span');
+                    typeSpan.className = 'type';
+                    typeSpan.textContent = t.type.name;
+                    typesDiv.appendChild(typeSpan);
+                });
+                card.appendChild(typesDiv);
+
+                const stats = document.createElement('div');
+                stats.innerHTML = data.stats.map(s => `<div>${s.stat.name}: <b>${s.base_stat}</b></div>`).join('');
+                card.appendChild(stats);
+
+                container.appendChild(card);
+            } catch (e) {
+                // Handle errors
+            }
+        }
+    }
+
+        // Button event listeners
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchAllPokemon();
+            displayForms('mega'); // Default view
+
+            document.querySelectorAll('.form-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    displayForms(btn.getAttribute('data-form'));
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+<!--
 <body>
     <header style="background:#ffffff;color:rgb(0, 0, 0);padding:20px 0;text-align:center;font-size:34px;letter-spacing:2px;">
         PokePedia
@@ -75,4 +251,4 @@
 </body>
 </html>
 
-
+ -->
