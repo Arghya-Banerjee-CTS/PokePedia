@@ -178,9 +178,8 @@ body {
 
 .grid {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 12px;
-    height: 220px;
 }
 
 .card {
@@ -193,15 +192,15 @@ body {
 }
 
 .thumb {
-    height: 120px;
+    height: 150px;
     display: grid;
     place-items: center;
     background: linear-gradient(100deg, #fafbff, #f2f5ff);
 }
 
 .thumb img {
-    width: 150px;
-    height: 150px;
+    width: 180px;
+    height: 180px;
     image-rendering: pixelated;
     display: block;
 }
@@ -212,18 +211,22 @@ body {
 
 .row {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
+    justify-content: center;
+    gap: 4px; 
 }
 
 .no {
     color: #6b7385;
     font-weight: 800;
+    font-size: 14px;
 }
 
 .name {
     font-weight: 800;
+    font-size: 16px;
+    text-align: center;
 }
 
 .types {
