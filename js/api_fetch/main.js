@@ -1,21 +1,27 @@
-import { fetchDataByName } from "./fetchData.js";
-import { formatPokemonData } from "./formatData.js";
+import { fetchDataByName, fetchAllPokemon } from "./fetchData.js";
+import { formatPokemonByNameData, formatAllPokemonData } from "./formatData.js";
 
-export async function getPokemonDataByName(pokemonNameOrId) {
+export async function getPokemonDataByName(pokemonName) {
   try {
-    // Fetch raw API data for the given Pokémon
-    const rawData = await fetchDataByName(pokemonNameOrId);
-
-    // Format raw data into simplified object
-    const formattedData = formatPokemonData(rawData);
-
-    // Return the formatted JSON object
+    const rawData = await fetchDataByName(pokemonName);
+    const formattedData = formatPokemonByNameData(rawData);
     return formattedData;
   } catch (error) {
-    console.error(`Error getting data for: ${pokemonNameOrId}`, error);
-    // You may want to return null or throw further, depending on your app
+    console.error(`Error getting data for: ${pokemonName}`, error);
     return null;
   }
 }
 
-getPokemonDataByName("bulbasaur").then((data) => console.log(data));
+export async function getPAllPokemon(limit = 100000) {
+  try {
+    const rawData = await fetchAllPokemon(limit);
+    const formattedData = formatAllPokemonData(rawData);
+    return formattedData;
+  } catch (error) {
+    console.error(`Error getting all Pokemon data:`, error);
+    return null;
+  }
+}
+
+getPokemonDataByName("pikachu").then((data) => console.log(data));
+getPAllPokemon(12).then((data) => console.log(data));

@@ -11,7 +11,23 @@ export async function fetchDataByName(pokemonName) {
     const data = await response.json();
     return data;
   } catch (err) {
-    console.error("Error fetching Pokémon data:", err);
+    console.error("Error fetching Pokémon data by name:", err);
+    throw err;
+  }
+}
+
+export async function fetchAllPokemon(limit = 100000) {
+  try {
+    const response = await fetch(apiUrls.getAllPokemon(limit));
+    if (!response.ok) {
+      throw new Error(
+        `Failed to fetch all Pokémon (Status: ${response.status})`
+      );
+    }
+    const data = await response.json();
+    return data;
+  } catch (err) {
+    console.error("Error fetching all Pokémon:", err);
     throw err;
   }
 }

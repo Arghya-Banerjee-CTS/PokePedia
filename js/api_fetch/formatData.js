@@ -1,4 +1,4 @@
-export function formatPokemonData(data) {
+export function formatPokemonByNameData(data) {
   return {
     name: data.name,
     id: data.id,
@@ -18,4 +18,11 @@ export function formatPokemonData(data) {
     game_indices: data.game_indices.map((g) => g.version.name),
     forms: data.forms.map((f) => f.name),
   };
+}
+
+export function formatAllPokemonData(data) {
+  return data.results.map((pokemon) => ({
+    name: pokemon.name,
+    url: pokemon.url,
+  }));
 }
