@@ -28,7 +28,7 @@
         <button class="form-btn" data-form="hisui">Hisuian</button>
         <button class="form-btn" data-form="paldea">Paldean</button>
         <button class="form-btn" data-form="gmax">Gigantamax</button>
-        <button class="form-btn" data-form="all">All Special Forms</button>
+        <button class="form-btn" data-form="all">Other Alternate Forms</button>
     </div>
     <h1 id="form-title">Mega Evolutions</h1>
     <div class="container" id="mega-container"></div>
@@ -57,6 +57,7 @@
         // Beautify name for display
         function beautifyName(name) {
             return name
+                .replace(name.charAt(0), name.charAt(0).toUpperCase())
                 .replace('-mega', ' (Mega)')
                 .replace('-alola', ' (Alolan)')
                 .replace('-galar', ' (Galarian)')
