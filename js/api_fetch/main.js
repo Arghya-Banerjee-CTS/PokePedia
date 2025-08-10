@@ -1,9 +1,9 @@
 import { fetchDataByName, fetchAllPokemon } from "./fetchData.js";
 import { formatPokemonByNameData, formatAllPokemonData } from "./formatData.js";
 
-export async function getPokemonDataByName(pokemonName) {
+export async function getPokemonDataByNameOrId(pokemonNameorId) {
   try {
-    const rawData = await fetchDataByName(pokemonName);
+    const rawData = await fetchDataByName(pokemonNameorId);
     const formattedData = formatPokemonByNameData(rawData);
     return formattedData;
   } catch (error) {
