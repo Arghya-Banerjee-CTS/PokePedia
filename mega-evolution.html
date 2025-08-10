@@ -28,22 +28,37 @@
         <button class="form-btn" data-form="all">Other Alternate Forms</button>
     </div>
     <h1 id="form-title">Mega Evolutions</h1>
+
+    <div id="controls" style="text-align:center; margin-bottom: 10px;">
+        <span id="showing-info"></span>
+        <label style="margin-left:20px;">
+            Per page:
+            <select id="per-page-select">
+                <option value="8">8</option>
+                <option value="12">12</option>
+                <option value="16">16</option>
+                <option value="20" selected>20</option>
+                <option value="32">32</option>
+            </select>
+        </label>
+    </div>
     <div class="container" id="mega-container"></div>
 
     <script>
         let allPokemon = [];
-        let allPokemonDetails = {};
-
+        let allPokemonDetails = {}; // for caching details
+        // Track current page and form type
         let currentPage = 1;
-        const CARDS_PER_PAGE = 12;
+        let CARDS_PER_PAGE = 12;  
         let currentFiltered = [];
         let currentFormType = 'mega';
         let displayVersion = 0;
 
+        // Get container and title elements
         const container = document.getElementById('mega-container');
         const formTitle = document.getElementById('form-title');
 
-        // Keywords for special forms
+        // Store keywords for the special forms
         const formKeywords = {
             mega: ['-mega'],
             alola: ['-alola'],
@@ -60,7 +75,8 @@
             ]
         };
 
-        // Beautify name for display
+        // Beautify name for display by capitalising first letter and replacing keywords
+        // with more readable forms
         function beautifyName(name) {
             return name
                 .replace(name.charAt(0), name.charAt(0).toUpperCase())
@@ -106,7 +122,7 @@
         }
 
         
-
+        // Fetch all Pokemon data and pre-fetch special forms in the background
         async function fetchAllPokemon() {
         const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
         const data = await res.json();
@@ -124,10 +140,7 @@
                 }
             }
         }
-
-        
-        
-
+        // Render pagination controls
         function renderPagination(totalPages) {
             let pagination = document.getElementById('pagination');
             if (!pagination) {
@@ -195,12 +208,17 @@
                     ? 'All Special Forms'
                     : (formType.charAt(0).toUpperCase() + formType.slice(1)) + ' Forms';
 
+            // Pagination logic
             const totalPages = Math.ceil(filtered.length / CARDS_PER_PAGE);
             renderPagination(totalPages);
 
-            const start = (currentPage - 1) * CARDS_PER_PAGE;
-            const end = start + CARDS_PER_PAGE;
-            const pageItems = filtered.slice(start, end);
+            // Showing info
+            const showingInfo = document.getElementById('showing-info');
+            const start = (currentPage - 1) * CARDS_PER_PAGE + 1;
+            const end = Math.min(currentPage * CARDS_PER_PAGE, filtered.length);
+            showingInfo.textContent = `Showing ${filtered.length === 0 ? 0 : start}-${end} out of ${filtered.length}`;
+
+            const pageItems = filtered.slice(start - 1, end);
 
             for (const poke of pageItems) {
                 if (myVersion !== displayVersion) return;
@@ -242,7 +260,8 @@
 
                     container.appendChild(card);
                 } catch (e) {
-                    // Handle errors
+                    // Handle errors, e.g., if the sprite is not available
+                    console.error(`Error fetching details for ${poke.name}:`, e);
                 }
             }
         }
@@ -256,6 +275,13 @@
                 btn.addEventListener('click', () => {
                     displayForms(btn.getAttribute('data-form'));
                 });
+            });
+
+            const perPageSelect = document.getElementById('per-page-select');
+            perPageSelect.value = CARDS_PER_PAGE;
+            perPageSelect.addEventListener('change', () => {
+                CARDS_PER_PAGE = parseInt(perPageSelect.value, 10);
+                displayForms(currentFormType, true);
             });
         });
     </script>
