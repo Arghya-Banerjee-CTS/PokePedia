@@ -24,6 +24,9 @@ Includes a separate page for **Mega Evolutions**.
 ---
 
 ## 📷 Preview
-![PokéPedia Screenshot](./asset/images/ui/Dashboard_SS.png)
+![PokéPedia Dashboard Screenshot](./asset/images/ui/dashboard.png)
 
+![PokéPedia Mega-Evolution Screenshot](./asset/images/ui/mega-evolution.png)
+
+![PokéPedia Dashboard Screenshot](./asset/images/ui/pokedex.png)
 ---
