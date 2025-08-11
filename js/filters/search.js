@@ -133,10 +133,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchInput.addEventListener("input", applyFilters);
-    searchClear.addEventListener("click", () => {
-        searchInput.value = "";
-        applyFilters();
-    });
+    // searchClear.addEventListener("click", () => {
+    //     searchInput.value = "";
+    //     applyFilters();
+    // });
     typeChips.addEventListener("click", (e) => {
         if (e.target.classList.contains("chip")) {
             if (e.target.classList.contains("active")) {
