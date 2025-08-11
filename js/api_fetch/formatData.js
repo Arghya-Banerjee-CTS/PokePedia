@@ -2,7 +2,7 @@ export function formatPokemonByNameData(data) {
   return {
     name: data.name,
     id: data.id,
-    default_image: data.sprites.other["dream_world"].front_default,
+    default_image: data.sprites.other["official-artwork"].front_default || data.sprites.front_default,
     types: data.types.map((t) => t.type.name),
     height: data.height,
     weight: data.weight,
