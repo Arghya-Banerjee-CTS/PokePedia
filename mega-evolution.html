@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Evolutions - PokePedia</title>
+    <link rel="stylesheet" href="./css/mega.css">
+</head>
+ <body>
+    <header class="header">
+        <div class="brand">
+            <div class="brand-mark" aria-hidden="true"></div>
+            <h1>PokePedia</h1>
+        </div>
+
+        <div class="search">
+            <input id="searchInput" type="search" placeholder="Search Pokemon, types, #..">
+            <button id="searchClear" type="button" title="Clear">x</button>
+        </div>
+    </header>
+    <div style="text-align:center; margin: 20px 0;">
+        <button class="form-btn" data-form="mega">Mega</button>
+        <button class="form-btn" data-form="alola">Alolan</button>
+        <button class="form-btn" data-form="galar">Galarian</button>
+        <button class="form-btn" data-form="hisui">Hisuian</button>
+        <button class="form-btn" data-form="paldea">Paldean</button>
+        <button class="form-btn" data-form="gmax">Gigantamax</button>
+        <button class="form-btn" data-form="all">Other Alternate Forms</button>
+    </div>
+    <h1 id="form-title">Mega Evolutions</h1>
+
+    <div id="controls" style="text-align:center; margin-bottom: 10px;">
+        <span id="showing-info"></span>
+        <label style="margin-left:20px;">
+            Per page:
+            <select id="per-page-select">
+                <option value="8">8</option>
+                <option value="12">12</option>
+                <option value="16">16</option>
+                <option value="20" selected>20</option>
+                <option value="32">32</option>
+            </select>
+        </label>
+    </div>
+    <div class="container" id="mega-container"></div>
+
+    <script>
+        let allPokemon = [];
+        let allPokemonDetails = {}; // for caching details
+        // Track current page and form type
+        let currentPage = 1;
+        let CARDS_PER_PAGE = 12;  
+        let currentFiltered = [];
+        let currentFormType = 'mega';
+        let displayVersion = 0;
+
+        // Get container and title elements
+        const container = document.getElementById('mega-container');
+        const formTitle = document.getElementById('form-title');
+
+        // Store keywords for the special forms
+        const formKeywords = {
+            mega: ['-mega'],
+            alola: ['-alola'],
+            galar: ['-galar'],
+            hisui: ['-hisui'],
+            paldea: ['-paldea'],
+            gmax: ['-gmax'],
+            all: [
+                '-primal','-totem', '-therian', '-origin', '-busted', '-school', '-ash', '-starter',
+                '-battle-bond', '-eternamax', '-dusk', '-dawn', '-midnight', '-sky', '-zen',
+                '-resolute', '-blade', '-shield', '-pirouette', '-black', '-white', '-complete', '-ultra',
+                '-crowned', '-rainy', '-snowy', '-sunny', '-fan',
+                '-frost', '-heat', '-mow', '-wash'
+            ]
+        };
+
+        // Beautify name for display by capitalising first letter and replacing keywords
+        // with more readable forms
+        function beautifyName(name) {
+            return name
+                .replace(name.charAt(0), name.charAt(0).toUpperCase())
+                .replace('-mega', ' (Mega)')
+                .replace('-alola', ' (Alolan)')
+                .replace('-galar', ' (Galarian)')
+                .replace('-hisui', ' (Hisuian)')
+                .replace('-paldea', ' (Paldean)')
+                .replace('-gmax', ' (Gigantamax)')
+                .replace('-primal', ' (Primal)')
+                .replace('-totem', ' (Totem)')
+                .replace('-therian', ' (Therian)')
+                .replace('-origin', ' (Origin)')
+                .replace('-busted', ' (Busted)')
+                .replace('-school', ' (School)')
+                .replace('-ash', ' (Ash)')
+                .replace('-starter', ' (Starter)')
+                .replace('-battle-bond', ' (Battle Bond)')
+                .replace('-eternamax', ' (Eternamax)')
+                .replace('-dusk', ' (Dusk)')
+                .replace('-dawn', ' (Dawn)')
+                .replace('-midnight', ' (Midnight)')
+                .replace('-sky', ' (Sky)')
+                .replace('-zen', ' (Zen)')
+                .replace('-resolute', ' (Resolute)')
+                .replace('-pirouette', ' (Pirouette)')
+                .replace('-black', ' (Black)')
+                .replace('-white', ' (White)')
+                .replace('-complete', ' (Complete)')
+                .replace('-ultra', ' (Ultra)')
+                .replace('-crowned', ' (Crowned)')
+                .replace('-blade', ' (Blade)')
+                .replace('-shield', ' (Shield)')
+                .replace('-rainy', ' (Rainy)')
+                .replace('-snowy', ' (Snowy)')
+                .replace('-sunny', ' (Sunny)')
+                .replace('-fan', ' (Fan)')
+                .replace('-frost', ' (Frost)')
+                .replace('-heat', ' (Heat)')
+                .replace('-mow', ' (Mow)')
+                .replace('-wash', ' (Wash)')
+                .replace(/-mega-[xy]/, (m) => m === '-mega-x' ? ' (Mega X)' : ' (Mega Y)');
+        }
+
+        
+        // Fetch all Pokemon data and pre-fetch special forms in the background
+        async function fetchAllPokemon() {
+        const res = await fetch('https://pokeapi.co/api/v2/pokemon?limit=2000');
+        const data = await res.json();
+        allPokemon = data.results;
+        // Pre-fetch details for all special forms in the background
+        const allSpecialForms = allPokemon.filter(p =>
+                Object.values(formKeywords).flat().some(keyword => p.name.includes(keyword))
+            );
+            for (const poke of allSpecialForms) {
+                // Fetch and cache details if not already cached
+                if (!allPokemonDetails[poke.name]) {
+                    fetch(poke.url)
+                        .then(res => res.json())
+                        .then(data => { allPokemonDetails[poke.name] = data; });
+                }
+            }
+        }
+        // Render pagination controls
+        function renderPagination(totalPages) {
+            let pagination = document.getElementById('pagination');
+            if (!pagination) {
+                pagination = document.createElement('div');
+                pagination.id = 'pagination';
+                pagination.style.textAlign = 'center';
+                pagination.style.margin = '20px 0';
+                container.parentNode.insertBefore(pagination, container.nextSibling);
+            }
+            pagination.innerHTML = '';
+
+            if (totalPages <= 1) return;
+
+            // Prev button
+            const prev = document.createElement('button');
+            prev.textContent = 'Prev';
+            prev.disabled = currentPage === 1;
+            prev.onclick = () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    displayForms(currentFormType, false);
+                }
+            };
+            pagination.appendChild(prev);
+
+            // Page numbers
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.className = (i === currentPage) ? 'form-btn active' : 'form-btn';
+                btn.onclick = () => {
+                    currentPage = i;
+                    displayForms(currentFormType, false);
+                };
+                pagination.appendChild(btn);
+            }
+
+            // Next button
+            const next = document.createElement('button');
+            next.textContent = 'Next';
+            next.disabled = currentPage === totalPages;
+            next.onclick = () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    displayForms(currentFormType, false);
+                }
+            };
+            pagination.appendChild(next);
+        }
+
+        async function displayForms(formType, resetPage = true) {
+            const myVersion = ++displayVersion;
+            if (resetPage) currentPage = 1;
+            currentFormType = formType;
+            container.innerHTML = '';
+            let keywords = formKeywords[formType];
+            let filtered = allPokemon.filter(p =>
+                keywords.some(keyword => p.name.includes(keyword))
+            );
+            filtered.sort((a, b) => a.name.localeCompare(b.name));
+            currentFiltered = filtered;
+
+            formTitle.textContent =
+                formType === 'all'
+                    ? 'All Special Forms'
+                    : (formType.charAt(0).toUpperCase() + formType.slice(1)) + ' Forms';
+
+            // Pagination logic
+            const totalPages = Math.ceil(filtered.length / CARDS_PER_PAGE);
+            renderPagination(totalPages);
+
+            // Showing info
+            const showingInfo = document.getElementById('showing-info');
+            const start = (currentPage - 1) * CARDS_PER_PAGE + 1;
+            const end = Math.min(currentPage * CARDS_PER_PAGE, filtered.length);
+            showingInfo.textContent = `Showing ${filtered.length === 0 ? 0 : start}-${end} out of ${filtered.length}`;
+
+            const pageItems = filtered.slice(start - 1, end);
+
+            for (const poke of pageItems) {
+                if (myVersion !== displayVersion) return;
+                try {
+                    let data = allPokemonDetails[poke.name];
+                    if (!data) {
+                        // If not cached yet, fetch and cache it
+                        const res = await fetch(poke.url);
+                        data = await res.json();
+                        allPokemonDetails[poke.name] = data;
+                    }
+                    if (myVersion !== displayVersion) return;
+
+                    const card = document.createElement('div');
+                    card.className = 'card';
+
+                    const img = document.createElement('img');
+                    img.src = data.sprites.other['official-artwork'].front_default || data.sprites.front_default;
+                    img.alt = data.name;
+                    card.appendChild(img);
+                    
+                    const idLabel = document.createElement('div');
+                    idLabel.textContent = `#${data.id}`;
+                    idLabel.style.fontSize = '0.85em';
+                    idLabel.style.color = '#888';
+                    idLabel.style.marginBottom = '2px';
+                    card.appendChild(idLabel);
+
+                    const title = document.createElement('h2');
+                    title.textContent = beautifyName(data.name);
+                    card.appendChild(title);
+
+                    const typesDiv = document.createElement('div');
+                    typesDiv.className = 'types';
+                    data.types.forEach(t => {
+                        // const typeSpan = document.createElement('span');
+                        // typeSpan.className = 'type';
+                        // typeSpan.textContent = t.type.name;
+                        // typesDiv.appendChild(typeSpan);
+                            const typeSpan = document.createElement('span');
+                            typeSpan.className = `type t-${t.type.name}`; // Add t-<type> class
+                            typeSpan.textContent = t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1);
+                            typesDiv.appendChild(typeSpan);
+                    });
+                    card.appendChild(typesDiv);
+
+                    // const stats = document.createElement('div');
+                    // stats.innerHTML = data.stats.map(s => `<div>${s.stat.name}: <b>${s.base_stat}</b></div>`).join('');
+                    // card.appendChild(stats);
+
+                    container.appendChild(card);
+                } catch (e) {
+                    // Handle errors, e.g., if the sprite is not available
+                    console.error(`Error fetching details for ${poke.name}:`, e);
+                }
+            }
+        }
+
+        // Button event listeners
+        document.addEventListener('DOMContentLoaded', async () => {
+            await fetchAllPokemon();
+            displayForms('mega'); // Default view
+
+            document.querySelectorAll('.form-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    displayForms(btn.getAttribute('data-form'));
+                });
+            });
+
+            const perPageSelect = document.getElementById('per-page-select');
+            perPageSelect.value = CARDS_PER_PAGE;
+            perPageSelect.addEventListener('change', () => {
+                CARDS_PER_PAGE = parseInt(perPageSelect.value, 10);
+                displayForms(currentFormType, true);
+            });
+        });
+    </script>
+</body>
+</html>
