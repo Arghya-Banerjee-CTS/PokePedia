@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const species = await speciesRes.json();
         pokemon.details = {
             types: data.types.map(t => t.type.name),
-            sprite: data.sprites.front_default,
+            sprite: data.sprites.other["official-artwork"].front_default || data.sprite.front_default,
             isLegendary: species.is_legendary,
             hasMega: species.varieties.some(v => v.pokemon.name.includes("mega")),
             isFullyEvolved: !species.evolves_from_species,
@@ -135,10 +135,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     searchInput.addEventListener("input", applyFilters);
-    searchClear.addEventListener("click", () => {
-        searchInput.value = "";
-        applyFilters();
-    });
+    // searchClear.addEventListener("click", () => {
+    //     searchInput.value = "";
+    //     applyFilters();
+    // });
     typeChips.addEventListener("click", (e) => {
         if (e.target.classList.contains("chip")) {
             if (e.target.classList.contains("active")) {
@@ -162,7 +162,9 @@ document.addEventListener("DOMContentLoaded", function () {
     (async function init() {
         allPokemon = await fetchAllPokemon();
         await Promise.all(allPokemon.map(fetchPokemonDetails));
-        // Do not call applyFilters here, so dummy cards remain until user interacts
+        // Set sort to id ascending on initial load
+        sortSelect.value = "id_asc";
+        applyFilters(); // Show all Pokémon sorted by id ascending
     })();
 });
 
