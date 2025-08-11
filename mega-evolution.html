@@ -253,6 +253,7 @@
                     title.textContent = beautifyName(data.name);
                     card.appendChild(title);
 
+                
                     const typesDiv = document.createElement('div');
                     typesDiv.className = 'types';
                     data.types.forEach(t => {
@@ -264,6 +265,10 @@
                             typeSpan.className = `type t-${t.type.name}`; // Add t-<type> class
                             typeSpan.textContent = t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1);
                             typesDiv.appendChild(typeSpan);
+                    });
+                    // Add click event to navigate to detail.html with the correct pokemon name
+                    card.addEventListener('click', function() {
+                        window.location.href = `detail.html?pokemon=${encodeURIComponent(data.name)}`;
                     });
                     card.appendChild(typesDiv);
 
