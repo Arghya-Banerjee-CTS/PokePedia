@@ -1,0 +1,196 @@
+.form-btn {
+    background: #ef5350;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 22px;
+    margin: 0 5px 10px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 6px rgba(239,83,80,0.08);
+}
+.form-btn:hover, .form-btn.active {
+    background: #d32f2f;
+    color: #fff;
+}
+
+/* Remove space around header brand, make it touch top and sides */
+.header {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    align-items: center;
+    gap: 16px;
+    padding: 0 0 0 0; /* Remove all padding */
+    margin: 0;
+    background: #ffffff;
+    border-bottom: 1px solid #e6e9f2;
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background: #f5f7fb;
+    font: 500 14px/1.5 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+}
+
+h1 { 
+    text-align: center; 
+}
+.container { 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 20px; 
+}
+
+.card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    width: 220px;
+    padding: 16px;
+    text-align: center;
+}
+
+.card img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    margin: 0 auto 10px auto;
+    display: block;
+}
+
+.card h2 { 
+    margin: 10px 0 5px; 
+    font-size: 1.2em; 
+}
+.types { 
+    margin: 8px 0; 
+}
+.type {
+    display: inline-block;
+    background: #eee;
+    border-radius: 8px;
+    padding: 2px 8px;
+    margin: 0 2px;
+    font-size: 0.9em;
+    color: white;
+}
+
+.header {
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    align-items: center;
+    gap: 16px;
+    pad: 16px 24px;
+    background: #ffffff;
+    border-bottom: 1px solid #e6e9f2;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.brand h1 {
+    font-size: 20px;
+    margin: 0;
+}
+
+.brand-mark {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+}
+
+.search {
+    justify-self: end;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ffffff;
+    border: 1px solid #e6e9f2;
+    /* border-radius: 999px; */
+    padding: 8px 10px 8px 14px;
+}
+
+.search input {
+    border: 0;
+    outline: 0;
+    width: 360px;
+    font: inherit;
+}
+
+
+.t-grass {
+    background: #78c850;
+}
+
+.t-fire {
+    background: #f08030;
+}
+
+.t-flying {
+    background: #a890f0;
+}
+
+.t-water {
+    background: #6890f0;
+}
+
+.t-electric {
+    background: #f8d030;
+}
+
+.t-ice {
+    background: #98d8d8;
+}
+
+.t-fighting {
+    background: #c03028;
+}
+
+.t-poison {
+    background: #a040a0;
+}
+
+.t-ground {
+    background: #f8be21;
+}
+
+.t-psychic {
+    background: #f85888;
+}
+
+.t-rock {
+    background: #7e7e7e;
+}
+
+.t-ghost {
+    background: #705898;
+}
+
+.t-dragon {
+    background: #7038f8;
+}
+
+.t-dark {
+    background: #705848;
+}
+
+.t-steel {
+    background: #b8b8d0;
+}
+
+.t-fairy {
+    background: #ee99ac;
+}
+
+.t-normal {
+    background: #a8a878;
+}

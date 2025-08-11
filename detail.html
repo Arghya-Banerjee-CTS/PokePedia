@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poképedia - Pokémon Explorer</title>
+    <link rel="stylesheet" href="./css/detail.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="pokeball-nav">
+                    <div class="pokeball-nav-top"></div>
+                    <div class="pokeball-nav-center"></div>
+                    <div class="pokeball-nav-bottom"></div>
+                </div>
+                <span>Poképedia</span>
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn home-btn" onclick="goHome()">
+                    <span>🏠</span>
+                    Home
+                </button>
+                <button class="nav-btn about-btn">
+                    <span>ℹ️</span>
+                    About
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Pokédex Container -->
+    <div class="pokedex-container">
+        <!-- Search Panel -->
+        <div class="search-panel">
+            <div class="panel-header">
+                <div class="led-indicator"></div>
+                <h1 class="pokedex-title">Poképedia</h1>
+                <div class="control-buttons">
+                    <div class="btn-circle red"></div>
+                    <div class="btn-circle yellow"></div>
+                    <div class="btn-circle green"></div>
+                </div>
+            </div>
+            
+            <div class="search-section">
+                <div class="search-label">SEARCH POKÉMON</div>
+                <div class="search-input-container">
+                    <input type="text" id="name" placeholder="Enter Pokémon name..." class="search-input">
+                    <button onclick="details()" class="search-btn">
+                        <span class="search-icon">🔍</span>
+                        <span class="search-text">SCAN</span>
+                        <div class="search-loader"></div>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Display -->
+        <div class="main-display">
+            <div class="screen-border">
+                <div class="screen" id="result">
+                    <div class="welcome-screen">
+                        <div class="pokeball-icon">
+                            <div class="pokeball-top"></div>
+                            <div class="pokeball-center"></div>
+                            <div class="pokeball-bottom"></div>
+                        </div>
+                        <h2>Poképedia READY</h2>
+                        <p>Enter a Pokémon name to begin analysis</p>
+                        <div class="scan-line"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <div class="dpad">
+                    <div class="dpad-up"></div>
+                    <div class="dpad-right"></div>
+                    <div class="dpad-down"></div>
+                    <div class="dpad-left"></div>
+                    <div class="dpad-center"></div>
+                </div>
+                <div class="action-buttons">
+                    <div class="btn-a">A</div>
+                    <div class="btn-b">B</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./js/pokemon_details/details.js"></script>
+</body>
+</html>
