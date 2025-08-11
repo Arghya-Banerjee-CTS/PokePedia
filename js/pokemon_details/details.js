@@ -185,6 +185,7 @@ async function displayResultWithTransition(pokemonData) {
 
 // Home navigation function
 function goHome() {
+    window.location.href = `index.html`;
     const result = document.getElementById("result");
     const nameInput = document.getElementById("name");
     

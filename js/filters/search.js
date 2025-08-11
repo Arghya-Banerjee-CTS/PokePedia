@@ -48,39 +48,50 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function renderGrid(pokemonList) {
-        grid.innerHTML = "";
-        if (pokemonList.length === 0) {
-            grid.innerHTML = "<div style='padding:2em;'>No Pokémon found.</div>";
-            if (window.repaginate) window.repaginate();
-            return;
-        }
-        Promise.all(
-            pokemonList.map(async (pokemon) => {
-                const details = await fetchPokemonDetails(pokemon);
-                const typesHtml = details.types.map(
-                    t => `<span class="type t-${t}">${capitalize(t)}</span>`
-                ).join("");
-                const card = document.createElement("article");
-                card.className = "card";
-                card.setAttribute("role", "listitem");
-                card.innerHTML = `
-                    <div class="thumb">
-                        <img src="${details.sprite}" alt="${capitalize(pokemon.name)}">
-                    </div>
-                    <div class="meta">
-                        <div class="row">
-                            <span class="no">${padId(pokemon.id)}</span>
-                            <span class="name">${capitalize(pokemon.name)}</span>
-                        </div>
-                        <div class="types">${typesHtml}</div>
-                    </div>
-                `;
-                grid.appendChild(card);
-            })
-        ).then(() => {
-            if (window.repaginate) window.repaginate();
-        });
+    grid.innerHTML = "";
+    if (pokemonList.length === 0) {
+        grid.innerHTML = "<div style='padding:2em;'>No Pokémon found.</div>";
+        if (window.repaginate) window.repaginate();
+        return;
     }
+    Promise.all(
+        pokemonList.map(async (pokemon) => {
+            const details = await fetchPokemonDetails(pokemon);
+            const typesHtml = details.types.map(
+                t => `<span class="type t-${t}">${capitalize(t)}</span>`
+            ).join("");
+            const card = document.createElement("article");
+            card.className = "card";
+            card.setAttribute("role", "listitem");
+            card.innerHTML = `
+                <div class="thumb">
+                    <img src="${details.sprite}" alt="${capitalize(pokemon.name)}">
+                </div>
+                <div class="meta">
+                    <div class="row">
+                        <span class="no">${padId(pokemon.id)}</span>
+                        <span class="name">${capitalize(pokemon.name)}</span>
+                    </div>
+                    <div class="types">${typesHtml}</div>
+                </div>
+            `;
+            grid.appendChild(card);
+        })
+    ).then(() => {
+        // Add click listeners after all cards are in the DOM
+        const cards = document.querySelectorAll(".card");
+        cards.forEach(card => {
+            card.addEventListener('click', () => {
+                const nameElement = card.querySelector(".meta .row .name");
+                if (nameElement) {
+                    const pokeName = nameElement.textContent.trim().toLowerCase();
+                    window.location.href = `detail.html?pokemon=${encodeURIComponent(pokeName)}`;
+                }
+            });
+        });
+        if (window.repaginate) window.repaginate();
+    });
+}
 
      
 
@@ -168,18 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })();
 });
 
-const cards = document.querySelectorAll(".card");
 
-cards.forEach(card => {
-   
-    card.addEventListener('click', (event) => {
-      const nameElement = card.querySelector(".meta .row .name");
-      console.log(nameElement.textContent)
-      window.location.href = `detail.html?pokemon=${nameElement.textContent}`;
-; 
-      
-      
-      
-});
-  
-}); 
+
+console.log("search js is working")
+
