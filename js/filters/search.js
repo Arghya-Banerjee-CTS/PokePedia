@@ -82,6 +82,8 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
+     
+
     function applyFilters() {
         const q = searchInput.value.trim().toLowerCase();
         const activeType = typeChips.querySelector(".chip.active");
@@ -154,6 +156,8 @@ document.addEventListener("DOMContentLoaded", function () {
     flagHasMega.addEventListener("change", applyFilters);
     flagFullyEvolved.addEventListener("change", applyFilters);
 
+
+
     // --- Initial Load ---
     (async function init() {
         allPokemon = await fetchAllPokemon();
@@ -161,3 +165,19 @@ document.addEventListener("DOMContentLoaded", function () {
         // Do not call applyFilters here, so dummy cards remain until user interacts
     })();
 });
+
+const cards = document.querySelectorAll(".card");
+
+cards.forEach(card => {
+   
+    card.addEventListener('click', (event) => {
+      const nameElement = card.querySelector(".meta .row .name");
+      console.log(nameElement.textContent)
+      window.location.href = `detail.html?pokemon=${nameElement.textContent}`;
+; 
+      
+      
+      
+});
+  
+}); 

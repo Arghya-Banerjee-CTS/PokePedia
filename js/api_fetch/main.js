@@ -23,5 +23,4 @@ export async function getPAllPokemon(limit = 100000) {
   }
 }
 
-getPokemonDataByName("pikachu").then((data) => console.log(data));
-getPAllPokemon(12).then((data) => console.log(data));
+

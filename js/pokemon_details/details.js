@@ -1,4 +1,4 @@
-import { getPokemonDataByName } from "../api_fetch/main.js";
+import { getPokemonDataByNameOrId } from "../api_fetch/main.js";
 
 // Main function to handle Pokemon search
 async function details() {
@@ -16,7 +16,7 @@ async function details() {
         showLoadingWithTempContainer();
         
         // Fetch Pokemon data
-        const pokemonData = await getPokemonDataByName(input);
+        const pokemonData = await getPokemonDataByNameOrId(input);
         console.log(pokemonData);
 
         // Validate data
@@ -24,16 +24,22 @@ async function details() {
             throw new Error("Invalid Pokémon data received");
         }
 
+        // Update the URL with the searched Pokémon
+        updateUrl(input);
+
         // Display Pokemon details with entrance animation
         await displayResultWithTransition(pokemonData);
         
-        // Animate stat bars after a short delay
         setTimeout(animateStatBars, 300);
 
     } catch (error) {
         console.error("Error fetching Pokemon data:", error);
         showError(error.message || "Failed to fetch Pokémon data");
     }
+}
+function updateUrl(pokemonName) {
+    const newUrl = `${window.location.pathname}?pokemon=${pokemonName.toLowerCase()}`;
+    history.pushState({ pokemon: pokemonName }, '', newUrl);
 }
 
 // Enhanced loading with temporary container animation
@@ -398,7 +404,15 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    const params = new URLSearchParams(window.location.search);
+    const pokemonFromUrl = params.get('pokemon');
+    if (pokemonFromUrl) {
+        if (nameInput) nameInput.value = pokemonFromUrl;
+        details();
+    }
 });
+
+
 
 // Make functions globally available
 window.details = details;
