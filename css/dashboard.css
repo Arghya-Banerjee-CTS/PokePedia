@@ -214,8 +214,8 @@ body {
 }
 
 .thumb img {
-    width: 180px;
-    height: 180px;
+    width: 150px;
+    height: 150px;
     image-rendering: pixelated;
     display: block;
 }
@@ -255,7 +255,7 @@ body {
 .type {
     color: #ffffff;
     font-weight: 800;
-    font-size: 12px;
+    font-size: 13px;
     border-radius: 999px;
     padding: 4px 8px;
     line-height: 1;
@@ -364,4 +364,8 @@ body {
 
 .t-normal {
     background: #a8a878;
+}
+
+.t-bug {
+    background: #543708;
 }
