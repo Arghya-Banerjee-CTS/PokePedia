@@ -56,10 +56,14 @@ h1 {
     text-align: center;
 }
 
-.card img { 
-    width: 120px; 
-    height: 120px;
- }
+.card img {
+    width: 160px;
+    height: 160px;
+    object-fit: contain;
+    margin: 0 auto 10px auto;
+    display: block;
+}
+
 .card h2 { 
     margin: 10px 0 5px; 
     font-size: 1.2em; 
@@ -74,6 +78,7 @@ h1 {
     padding: 2px 8px;
     margin: 0 2px;
     font-size: 0.9em;
+    color: white;
 }
 
 .header {
@@ -119,4 +124,73 @@ h1 {
     outline: 0;
     width: 360px;
     font: inherit;
+}
+
+
+.t-grass {
+    background: #78c850;
+}
+
+.t-fire {
+    background: #f08030;
+}
+
+.t-flying {
+    background: #a890f0;
+}
+
+.t-water {
+    background: #6890f0;
+}
+
+.t-electric {
+    background: #f8d030;
+}
+
+.t-ice {
+    background: #98d8d8;
+}
+
+.t-fighting {
+    background: #c03028;
+}
+
+.t-poison {
+    background: #a040a0;
+}
+
+.t-ground {
+    background: #f8be21;
+}
+
+.t-psychic {
+    background: #f85888;
+}
+
+.t-rock {
+    background: #7e7e7e;
+}
+
+.t-ghost {
+    background: #705898;
+}
+
+.t-dragon {
+    background: #7038f8;
+}
+
+.t-dark {
+    background: #705848;
+}
+
+.t-steel {
+    background: #b8b8d0;
+}
+
+.t-fairy {
+    background: #ee99ac;
+}
+
+.t-normal {
+    background: #a8a878;
 }
