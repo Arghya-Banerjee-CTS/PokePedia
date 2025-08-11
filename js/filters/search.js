@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const species = await speciesRes.json();
         pokemon.details = {
             types: data.types.map(t => t.type.name),
-            sprite: data.sprites.front_default,
+            sprite: data.sprites.other["official-artwork"].front_default || data.sprite.front_default,
             isLegendary: species.is_legendary,
             hasMega: species.varieties.some(v => v.pokemon.name.includes("mega")),
             isFullyEvolved: !species.evolves_from_species,
