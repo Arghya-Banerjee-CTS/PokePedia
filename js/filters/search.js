@@ -158,6 +158,8 @@ document.addEventListener("DOMContentLoaded", function () {
     (async function init() {
         allPokemon = await fetchAllPokemon();
         await Promise.all(allPokemon.map(fetchPokemonDetails));
-        // Do not call applyFilters here, so dummy cards remain until user interacts
+        // Set sort to id ascending on initial load
+        sortSelect.value = "id_asc";
+        applyFilters(); // Show all Pokémon sorted by id ascending
     })();
 });
